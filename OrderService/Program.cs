@@ -26,7 +26,7 @@ var registration = new AgentServiceRegistration()
     ID = "order-service",
     Name = "order-service",
     Address = "localhost",
-    Port = 5001
+    Port = 5002
 };
 
 consulClient.Agent.ServiceRegister(registration).Wait();
