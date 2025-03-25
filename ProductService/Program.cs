@@ -1,3 +1,4 @@
+using Consul;
 using Microsoft.EntityFrameworkCore;
 using ProductService.DataAccess;
 using ProductService.Services.Abstract;
@@ -16,6 +17,19 @@ builder.Services.AddDbContext<LamanDbContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService.Services.Concrete.ProductService>();
 
 var app = builder.Build();
+
+var consulClient = new ConsulClient(config => { config.Address = new Uri("http://localhost:8500"); });
+
+var registration = new AgentServiceRegistration()
+{
+    ID = "product-service",
+    Name = "product-service",
+    Address = "localhost",
+    Port = 5002
+};
+
+consulClient.Agent.ServiceRegister(registration).Wait();
+app.MapGet("/", () => "ProductService is running...");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
