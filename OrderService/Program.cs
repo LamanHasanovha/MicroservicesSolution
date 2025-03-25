@@ -19,6 +19,19 @@ builder.Services.AddScoped<IOrderService, OrderService.Services.Concrete.OrderSe
 
 var app = builder.Build();
 
+var consulClient = new ConsulClient(config => { config.Address = new Uri("http://localhost:8500"); });
+
+var registration = new AgentServiceRegistration()
+{
+    ID = "order-service",
+    Name = "order-service",
+    Address = "localhost",
+    Port = 5001
+};
+
+consulClient.Agent.ServiceRegister(registration).Wait();
+app.MapGet("/", () => "OrderService is running...");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
