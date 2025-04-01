@@ -3,26 +3,28 @@
     {
       "DownstreamPathTemplate": "/api/products",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5001
-        }
-      ],
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 5001
+      //  }
+      //],
       "ServiceName": "ProductService",
+      "LoadBalancerOptions": { "Type": "RoundRobin" },
       "UpstreamPathTemplate": "/gateway/products",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/orders",
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5002
-        }
-      ],
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 5002
+      //  }
+      //],
       "ServiceName": "OrderService",
+      "LoadBalancerOptions": { "Type": "RoundRobin" },
       "UpstreamPathTemplate": "/gateway/orders",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     }
@@ -30,7 +32,7 @@
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost:5000",
     "ServiceDiscoveryProvider": {
-      "Host": "localhost",
+      "Host": "host.docker.internal",
       "Port": 8500,
       "Type": "Consul"
     }
