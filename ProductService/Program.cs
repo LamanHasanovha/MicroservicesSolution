@@ -18,18 +18,29 @@ builder.Services.AddScoped<IProductService, ProductService.Services.Concrete.Pro
 
 var app = builder.Build();
 
-var consulClient = new ConsulClient(config => { config.Address = new Uri("http://localhost:8500"); });
-
-var registration = new AgentServiceRegistration()
+var consulConfig = builder.Configuration.GetSection("ConsulConfig");
+var consulClient = new ConsulClient(config =>
 {
-    ID = "product-service",
-    Name = "product-service",
-    Address = "localhost",
-    Port = 5001
-};
+    config.Address = new Uri(consulConfig["Host"]);
+});
 
-consulClient.Agent.ServiceRegister(registration).Wait();
-app.MapGet("/", () => "ProductService is running...");
+var registration = new AgentServiceRegistration
+{
+    ID = consulConfig["ServiceId"],
+    Name = consulConfig["ServiceName"],
+    Address = consulConfig["ServiceAddress"],
+    Port = int.Parse(consulConfig["ServicePort"]),
+    Check = new AgentServiceCheck
+    {
+        HTTP = $"{consulConfig["ServiceAddress"]}:{consulConfig["ServicePort"]}/health",
+        Interval = TimeSpan.FromSeconds(10),
+        Timeout = TimeSpan.FromSeconds(5)
+    }
+};
+await consulClient.Agent.ServiceDeregister(registration.ID);
+await consulClient.Agent.ServiceRegister(registration);
+
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
