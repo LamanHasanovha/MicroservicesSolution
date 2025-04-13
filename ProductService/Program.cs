@@ -32,7 +32,7 @@ var registration = new AgentServiceRegistration
     Port = int.Parse(consulConfig["ServicePort"]),
     Check = new AgentServiceCheck
     {
-        HTTP = $"{consulConfig["ServiceAddress"]}:{consulConfig["ServicePort"]}/health",
+        HTTP = $"http://{consulConfig["ServiceAddress"]}:{consulConfig["ServicePort"]}/health",
         Interval = TimeSpan.FromSeconds(10),
         Timeout = TimeSpan.FromSeconds(5)
     }
@@ -48,8 +48,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

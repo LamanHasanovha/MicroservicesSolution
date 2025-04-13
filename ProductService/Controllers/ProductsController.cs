@@ -20,4 +20,10 @@ public class ProductsController : ControllerBase
         var products = await _productService.GetAllProducts();
         return Ok(products);
     }
+
+    [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok("Products endpoint working!");
+    }
 }

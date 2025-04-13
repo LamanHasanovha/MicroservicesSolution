@@ -2,37 +2,37 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/products",
-      "DownstreamScheme": "https",
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "localhost",
-      //    "Port": 5001
-      //  }
-      //],
-      "ServiceName": "ProductService",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-service",
+          "Port": 50001
+        }
+      ],
+      //"ServiceName": "ProductService",
       "LoadBalancerOptions": { "Type": "RoundRobin" },
       "UpstreamPathTemplate": "/gateway/products",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/orders",
-      "DownstreamScheme": "https",
-      //"DownstreamHostAndPorts": [
-      //  {
-      //    "Host": "localhost",
-      //    "Port": 5002
-      //  }
-      //],
-      "ServiceName": "OrderService",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-service",
+          "Port": 50002
+        }
+      ],
+      //"ServiceName": "OrderService",
       "LoadBalancerOptions": { "Type": "RoundRobin" },
       "UpstreamPathTemplate": "/gateway/orders",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000",
+    "BaseUrl": "http://localhost:50000",
     "ServiceDiscoveryProvider": {
-      "Host": "host.docker.internal",
+      "Host": "consul",
       "Port": 8500,
       "Type": "Consul"
     }
