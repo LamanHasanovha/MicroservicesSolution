@@ -2,6 +2,7 @@ using Consul;
 using Microsoft.EntityFrameworkCore;
 using OrderService.DataAccess;
 using OrderService.Services.Abstract;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddDbContext<LamanDbContext>(options =>
 builder.Services.AddScoped<IOrderService, OrderService.Services.Concrete.OrderService>();
 
 var app = builder.Build();
+
+app.UseMetricServer();
+app.UseHttpMetrics();
 
 var consulConfig = builder.Configuration.GetSection("ConsulConfig");
 var consulClient = new ConsulClient(config =>

@@ -1,31 +1,134 @@
 {
   "Routes": [
+    // Round Robin - ProductService
     {
-      "DownstreamPathTemplate": "/api/products",
+      "DownstreamPathTemplate": "/api/products/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-service",
+          "Host": "product-service-1",
+          "Port": 50001
+        },
+        {
+          "Host": "product-service-2",
+          "Port": 50001
+        },
+        {
+          "Host": "product-service-3",
           "Port": 50001
         }
       ],
-      //"ServiceName": "ProductService",
       "LoadBalancerOptions": { "Type": "RoundRobin" },
-      "UpstreamPathTemplate": "/gateway/products",
+      "UpstreamPathTemplate": "/gateway/roundrobin/products/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     },
+    // Least Connection - ProductService
     {
-      "DownstreamPathTemplate": "/api/orders",
+      "DownstreamPathTemplate": "/api/products/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "order-service",
+          "Host": "product-service-1",
+          "Port": 50001
+        },
+        {
+          "Host": "product-service-2",
+          "Port": 50001
+        },
+        {
+          "Host": "product-service-3",
+          "Port": 50001
+        }
+      ],
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "UpstreamPathTemplate": "/gateway/leastconnection/products/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    // Sticky Sessions (IP Hash üçün) - ProductService
+    {
+      "DownstreamPathTemplate": "/api/products/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-service-1",
+          "Port": 50001
+        },
+        {
+          "Host": "product-service-2",
+          "Port": 50001
+        },
+        {
+          "Host": "product-service-3",
+          "Port": 50001
+        }
+      ],
+      "LoadBalancerOptions": {
+        "Type": "CookieStickySessions",
+        "Key": "ASP.NET_SessionId",
+        "Expiry": 1800000
+      },
+      "UpstreamPathTemplate": "/gateway/stickysessions/products/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+
+    // Round Robin - OrderService
+    {
+      "DownstreamPathTemplate": "/api/orders/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-service-1",
+          "Port": 50002
+        },
+        {
+          "Host": "order-service-2",
           "Port": 50002
         }
       ],
-      //"ServiceName": "OrderService",
       "LoadBalancerOptions": { "Type": "RoundRobin" },
-      "UpstreamPathTemplate": "/gateway/orders",
+      "UpstreamPathTemplate": "/gateway/roundrobin/orders/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    // Least Connection - OrderService
+    {
+      "DownstreamPathTemplate": "/api/orders/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-service-1",
+          "Port": 50002
+        },
+        {
+          "Host": "order-service-2",
+          "Port": 50002
+        }
+      ],
+      "LoadBalancerOptions": { "Type": "LeastConnection" },
+      "UpstreamPathTemplate": "/gateway/leastconnection/orders/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    // Sticky Sessions (IP Hash üçün) - OrderService
+    {
+      "DownstreamPathTemplate": "/api/orders/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-service-1",
+          "Port": 50002
+        },
+        {
+          "Host": "order-service-2",
+          "Port": 50002
+        }
+      ],
+      "LoadBalancerOptions": {
+        "Type": "CookieStickySessions",
+        "Key": "ASP.NET_SessionId",
+        "Expiry": 1800000
+      },
+      "UpstreamPathTemplate": "/gateway/stickysessions/orders/{everything}",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
     }
   ],
@@ -36,5 +139,10 @@
       "Port": 8500,
       "Type": "Consul"
     }
+  },
+  "RateLimitOptions": {
+    "DisableRateLimitHeaders": false,
+    "QuotaExceededMessage": "Rate limit exceeded",
+    "HttpStatusCode": 429
   }
 }

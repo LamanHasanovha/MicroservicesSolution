@@ -11,8 +11,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderService", "OrderServic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5271B22-9955-4F42-B44F-A98ED11CB6D3}"
 	ProjectSection(SolutionItems) = preProject
+		docker-compose-old.yml = docker-compose-old.yml
 		docker-compose.yml = docker-compose.yml
+		run-tests.sh = run-tests.sh
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prometheus", "prometheus", "{BF2B63F1-9C3F-4264-96F8-67BCE9EEADB8}"
+	ProjectSection(SolutionItems) = preProject
+		prometheus.yml = prometheus.yml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoadTest", "LoadTest\LoadTest.csproj", "{A2812B7E-8D23-47CB-BA1A-B9015943C101}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +41,10 @@ Global
 		{1B92AA56-9191-4B67-91BF-1D55AFD5CA82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B92AA56-9191-4B67-91BF-1D55AFD5CA82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B92AA56-9191-4B67-91BF-1D55AFD5CA82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2812B7E-8D23-47CB-BA1A-B9015943C101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2812B7E-8D23-47CB-BA1A-B9015943C101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2812B7E-8D23-47CB-BA1A-B9015943C101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2812B7E-8D23-47CB-BA1A-B9015943C101}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

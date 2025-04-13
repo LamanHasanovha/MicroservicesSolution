@@ -18,12 +18,23 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
         var products = await _productService.GetAllProducts();
+        Response.Headers.Append("X-Service-Instance", Environment.GetEnvironmentVariable("SERVICE_INSTANCE") ?? "Unknown");
         return Ok(products);
     }
 
     [HttpGet("test")]
     public IActionResult Test()
     {
-        return Ok("Products endpoint working!");
+        return Ok($"Products endpoint working! Instance: {Environment.GetEnvironmentVariable("SERVICE_INSTANCE") ?? "Unknown"}");
+    }
+
+    [HttpGet("instance-info")]
+    public IActionResult GetInstanceInfo()
+    {
+        return Ok(new
+        {
+            Instance = Environment.GetEnvironmentVariable("SERVICE_INSTANCE") ?? "Unknown",
+            Timestamp = DateTime.UtcNow
+        });
     }
 }
