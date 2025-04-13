@@ -4,7 +4,7 @@ public class Order
 {
     public int Id { get; set; }
 
-    public int Productİd { get; set; }
+    public int ProductId { get; set; }
 
     public double Quantity { get; set; }
 
