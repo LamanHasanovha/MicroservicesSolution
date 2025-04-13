@@ -20,4 +20,10 @@ public class OrdersController : ControllerBase
         var Orders = await _orderService.GetAllOrders();
         return Ok(Orders);
     }
+
+    [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok("Orders endpoint working!");
+    }
 }
